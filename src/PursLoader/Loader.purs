@@ -79,12 +79,12 @@ loader' ref source = do
     Right opts -> do
       let pscOpts = pscOptions opts
 
-      srcss <- globAll srcs
-      ffiss <- globAll ffis
+      --srcss <- globAll srcs
+      --ffiss <- globAll ffis
 
-      let psciFile = mkPsci srcss ffiss
+      --let psciFile = mkPsci srcss ffiss
 
-      writeFileUtf8 psciFilename psciFile
+      --writeFileUtf8 psciFilename psciFile
 
       let moduleName = match moduleRegex source >>= (!!!) 1 >>= id
           hasForeign = test foreignRegex source
@@ -95,15 +95,15 @@ loader' ref source = do
       liftEff do
         clearDependencies ref
         addDependency ref (resourcePath ref)
-        sequence $ (\src -> addDependency ref (resolve src)) <$> concat srcss
+        --sequence $ (\src -> addDependency ref (resolve src)) <$> concat srcss
 
-      foreignPath <- if hasForeign
-                        then fromMaybe (pure Nothing) (findFFI ffiss <$> moduleName)
-                        else pure Nothing
+      --foreignPath <- if hasForeign
+      --                  then fromMaybe (pure Nothing) (findFFI ffiss <$> moduleName)
+      --                  else pure Nothing
 
-      fromMaybe (pure unit) ((\path -> liftEff (addDependency ref path)) <$> foreignPath)
+      --fromMaybe (pure unit) ((\path -> liftEff (addDependency ref path)) <$> foreignPath)
 
-      spawn pscCommand (srcs <> pscOpts)
+      --spawn pscCommand (srcs <> pscOpts)
 
       return result
 
